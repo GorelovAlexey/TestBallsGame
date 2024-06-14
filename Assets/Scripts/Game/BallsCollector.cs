@@ -1,8 +1,8 @@
-﻿using System;
+﻿using DG.Tweening;
+using System;
 using System.Drawing;
 using UniRx;
 using UnityEngine;
-using UnityEngine.tvOS;
 using static UnityEngine.ParticleSystem;
 
 namespace Assets.Scripts.Game
@@ -37,7 +37,7 @@ namespace Assets.Scripts.Game
             {
                 BallArrival.SetValueAndForceNotify(b);
                 AddBall(b, 0);
-                FieldCheck();
+                FieldCheckTween();
 
             }).AddTo(gameObject);
 
@@ -45,7 +45,7 @@ namespace Assets.Scripts.Game
             {
                 BallArrival.SetValueAndForceNotify(b);
                 AddBall(b, 1);
-                FieldCheck();
+                FieldCheckTween();
 
             }).AddTo(gameObject);
 
@@ -54,7 +54,7 @@ namespace Assets.Scripts.Game
             {
                 BallArrival.SetValueAndForceNotify(b);
                 AddBall(b, 2);
-                FieldCheck();
+                FieldCheckTween();
 
             }).AddTo(gameObject);
         }
@@ -109,6 +109,16 @@ namespace Assets.Scripts.Game
 
             if (IsFull())
                 GameStuck.SetValueAndForceNotify(true);
+        }
+
+        Tween fieldCheckTween;
+        private void FieldCheckTween()
+        {
+            fieldCheckTween?.Kill();
+            fieldCheckTween = DOVirtual.DelayedCall(.5f, () =>
+            {
+                FieldCheck();
+            }).SetLink(gameObject);
         }
 
         public bool IsFull()
