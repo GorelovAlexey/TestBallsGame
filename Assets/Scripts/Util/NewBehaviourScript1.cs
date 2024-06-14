@@ -22,5 +22,19 @@ namespace Assets.Scripts.Util
 
             return DOTween.To(timeGetter, timeSetter, 1f, time).SetLink(transform.gameObject);
         }
+
+        public static Tween BezierTween(this Transform transform, Transform start, Transform startControl, Transform end, Transform endControl, float time)
+        {
+            var currTime = 0f;
+            DOGetter<float> timeGetter = () => currTime;
+            DOSetter<float> timeSetter = t =>
+            {
+                currTime = t;
+                var currPosition = BezierUtility.BezierPoint(startControl.position, start.position, end.position, endControl.position, currTime);
+                transform.position = currPosition;
+            };
+
+            return DOTween.To(timeGetter, timeSetter, 1f, time).SetLink(transform.gameObject);
+        }
     }
 }

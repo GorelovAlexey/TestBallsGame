@@ -42,12 +42,12 @@ namespace Assets.Scripts.UI
         {
             var seq = DOTween.Sequence();
 
-            var a = pointA.transform.position;
-            var ac = pointAControl.transform.position;
-            var b = pointB.transform.position;
-            var bc = pointBControl.transform.position;
-            var c = pointC.transform.position;
-            var cc = pointCControl.transform.position;
+            var a = pointA;//.position;
+            var ac = pointAControl;//.position;
+            var b = pointB;//.position;
+            var bc = pointBControl;//.position;
+            var c = pointC;//.position;
+            var cc = pointCControl;//.position;
 
             var minTime = .8f;
             var time1 = Random.Range(minTime, minTime * 3f);
