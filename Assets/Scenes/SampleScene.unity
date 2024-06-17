@@ -134,7 +134,7 @@ GameObject:
   - component: {fileID: 14249433}
   - component: {fileID: 14249435}
   - component: {fileID: 14249434}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -267,7 +267,6 @@ GameObject:
   m_Component:
   - component: {fileID: 130909392}
   - component: {fileID: 130909396}
-  - component: {fileID: 130909395}
   - component: {fileID: 130909394}
   - component: {fileID: 130909393}
   m_Layer: 0
@@ -344,41 +343,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &130909395
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 130909391}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.375, y: 0.625}
-  m_Direction: 0
 --- !u!212 &130909396
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -537,7 +501,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 235718141}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -653,6 +617,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameBallEntered:
     value: {fileID: 0}
+  ballsList: []
 --- !u!1001 &276830472
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -879,7 +844,6 @@ GameObject:
   m_Component:
   - component: {fileID: 418096546}
   - component: {fileID: 418096550}
-  - component: {fileID: 418096549}
   - component: {fileID: 418096548}
   - component: {fileID: 418096547}
   m_Layer: 0
@@ -956,41 +920,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &418096549
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 418096545}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.375, y: 0.625}
-  m_Direction: 0
 --- !u!212 &418096550
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -1135,6 +1064,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameBallEntered:
     value: {fileID: 0}
+  ballsList: []
 --- !u!1 &485509948
 GameObject:
   m_ObjectHideFlags: 0
@@ -1328,7 +1258,7 @@ GameObject:
   - component: {fileID: 514463572}
   - component: {fileID: 514463574}
   - component: {fileID: 514463573}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1626,9 +1556,9 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 010000000000000002000000
-    _keys: 010000000000000002000000
-    _values: 0f0000000a00000005000000
+    _keyValues: 01000000020000000300000000000000
+    _keys: 01000000020000000300000000000000
+    _values: 0f0000000a0000000500000000000000
   hud: {fileID: 1825255104}
   screensHolder: {fileID: 379925196}
   level: {fileID: 1754020110}
@@ -1700,6 +1630,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameBallEntered:
     value: {fileID: 0}
+  ballsList: []
 --- !u!114 &688474018
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1844,7 +1775,6 @@ GameObject:
   m_Component:
   - component: {fileID: 744909755}
   - component: {fileID: 744909759}
-  - component: {fileID: 744909758}
   - component: {fileID: 744909757}
   - component: {fileID: 744909756}
   m_Layer: 0
@@ -1921,41 +1851,6 @@ Rigidbody2D:
   m_SleepingMode: 1
   m_CollisionDetection: 0
   m_Constraints: 0
---- !u!70 &744909758
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 744909754}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.375, y: 0.625}
-  m_Direction: 0
 --- !u!212 &744909759
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -2153,7 +2048,7 @@ GameObject:
   - component: {fileID: 797876526}
   - component: {fileID: 797876528}
   - component: {fileID: 797876527}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2336,7 +2231,7 @@ Transform:
   m_GameObject: {fileID: 827437010}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 10}
   m_LocalScale: {x: 6, y: 6, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2544,7 +2439,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 925579462}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2577,7 +2472,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 989695175}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2643,7 +2538,7 @@ GameObject:
   - component: {fileID: 1049116100}
   - component: {fileID: 1049116102}
   - component: {fileID: 1049116101}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -2933,7 +2828,7 @@ GameObject:
   - component: {fileID: 1142730122}
   - component: {fileID: 1142730121}
   - component: {fileID: 1142730120}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Square
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3063,7 +2958,7 @@ GameObject:
   - component: {fileID: 1148668515}
   - component: {fileID: 1148668517}
   - component: {fileID: 1148668516}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3489,6 +3384,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   GameBallEntered:
     value: {fileID: 0}
+  ballsList: []
 --- !u!1 &1349136395
 GameObject:
   m_ObjectHideFlags: 0
@@ -3532,7 +3428,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1351342600}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Wall (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -3939,7 +3835,6 @@ GameObject:
   m_Component:
   - component: {fileID: 1740648066}
   - component: {fileID: 1740648065}
-  - component: {fileID: 1740648064}
   - component: {fileID: 1740648062}
   - component: {fileID: 1740648063}
   m_Layer: 0
@@ -4001,41 +3896,6 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 74.22
     m_UpperAngle: 340.3
---- !u!70 &1740648064
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1740648061}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.375, y: 0.625}
-  m_Direction: 0
 --- !u!212 &1740648065
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4352,7 +4212,7 @@ GameObject:
   - component: {fileID: 1884726735}
   - component: {fileID: 1884726737}
   - component: {fileID: 1884726736}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4485,7 +4345,7 @@ GameObject:
   - component: {fileID: 1965832332}
   - component: {fileID: 1965832334}
   - component: {fileID: 1965832333}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -4703,7 +4563,6 @@ GameObject:
   m_Component:
   - component: {fileID: 2114238886}
   - component: {fileID: 2114238885}
-  - component: {fileID: 2114238884}
   - component: {fileID: 2114238882}
   - component: {fileID: 2114238883}
   m_Layer: 0
@@ -4765,41 +4624,6 @@ HingeJoint2D:
   m_AngleLimits:
     m_LowerAngle: 74.22
     m_UpperAngle: 340.3
---- !u!70 &2114238884
-CapsuleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2114238881}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 0.375, y: 0.625}
-  m_Direction: 0
 --- !u!212 &2114238885
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -4935,12 +4759,13 @@ MonoBehaviour:
       elementIcon: {fileID: 0}
     reqReferences: {fileID: 0}
     isExpanded: 1
-    _keyValues: 010000000000000002000000
-    _keys: 010000000000000002000000
+    _keyValues: 01000000020000000300000000000000
+    _keys: 01000000020000000300000000000000
     _values:
-    - {fileID: 21300000, guid: 64caccc76586997498b1f75fa38c5c74, type: 3}
     - {fileID: 21300000, guid: 13407c471cfa32a4cbfaec22bc7f2a41, type: 3}
+    - {fileID: 21300000, guid: 64caccc76586997498b1f75fa38c5c74, type: 3}
     - {fileID: 21300000, guid: 94ca24f5fe65e3a4bac5b4144ea95aae, type: 3}
+    - {fileID: 0}
   ballPrefab: {fileID: 4331314140633834334, guid: 671afdd9b40584e4280a125c37a8bf9c, type: 3}
   ballsSpawn: {fileID: 131080956}
 --- !u!1 &2143301157
@@ -4954,7 +4779,7 @@ GameObject:
   - component: {fileID: 2143301158}
   - component: {fileID: 2143301160}
   - component: {fileID: 2143301159}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Triangle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -5076,41 +4901,6 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!58 &244511270640354029
-CircleCollider2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3627152802369381702}
-  m_Enabled: 0
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_UsedByComposite: 0
-  m_Offset: {x: 0, y: 0}
-  serializedVersion: 2
-  m_Radius: 0.5
 --- !u!212 &672657832218361207
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -5349,7 +5139,6 @@ GameObject:
   m_Component:
   - component: {fileID: 5524493936806775739}
   - component: {fileID: 4331314139917108526}
-  - component: {fileID: 244511270640354029}
   - component: {fileID: 3917741963440498058}
   - component: {fileID: 672657832218361207}
   - component: {fileID: 6807330172918298149}
@@ -5400,7 +5189,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   spriteRenderer: {fileID: 672657832218361207}
-  particlesPrefab: {fileID: 0}
 --- !u!1001 &4761430899641463456
 PrefabInstance:
   m_ObjectHideFlags: 0

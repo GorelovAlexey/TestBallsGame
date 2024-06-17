@@ -53,6 +53,11 @@ namespace Assets.Scripts
             SetStateMenu();
         }
 
+        public void Debug(string text)
+        {
+
+        }
+
         public void StartGame()
         {
             PlayerScore.Value = 0;

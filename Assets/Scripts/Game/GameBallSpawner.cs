@@ -17,10 +17,12 @@ namespace Assets.Scripts.Game
 
         [SerializeField] private Transform ballsSpawn;
 
+        public Sprite GetBallSprite(BallColor c) => ballColors[c];
+
         public GameBallObject SpawnBall()
         {
             var ball = Instantiate(ballPrefab, ballsSpawn);
-            var color = (BallColor)Random.Range(0, (int)BallColor.Green+ 1);
+            var color =  (BallColor)Random.Range(1, 4);
             ball.Setup(color, ballColors[color]);
             return ball;
         }
@@ -40,8 +42,5 @@ namespace Assets.Scripts.Game
                 Destroy(b.gameObject);
         }
 
-        public void Start()
-        {
-        }
     }
 }

@@ -13,7 +13,7 @@ namespace Assets.Scripts.Game
             {
                 if (!x) return;
 
-                Destroy(x.gameObject, 1);
+                Destroy(x.gameObject, .1f);
                 RemoveScore(x);
 
             }).AddTo(gameObject);

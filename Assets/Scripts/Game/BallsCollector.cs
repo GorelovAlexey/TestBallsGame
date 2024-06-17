@@ -1,5 +1,7 @@
 ﻿using DG.Tweening;
 using System;
+using System.Collections.Generic;
+using System.ComponentModel;
 using System.Drawing;
 using UniRx;
 using UnityEngine;
@@ -18,244 +20,221 @@ namespace Assets.Scripts.Game
         [SerializeField] private ParticleSystem greenParticles;
         [SerializeField] private ParticleSystem blueParticles;
 
+        public ReactiveProperty<bool> GameStuck { get; private set; } = new ReactiveProperty<bool>();
+        public ReactiveProperty<GameBallObject> BallArrival { get; private set; } = new ReactiveProperty<GameBallObject>();
+
+        private void Awake()
+        {
+            Observable.Merge(leftTrigger.GameBallEntered, middleTrigger.GameBallEntered, rightTrigger.GameBallEntered).Subscribe(b =>
+            {
+                BallArrival.SetValueAndForceNotify(b);
+                ScheduleFieldCheck();
+
+            }).AddTo(gameObject);
+        }
+
+        // GAME FIELD STRUCTURE
         // |0.0|-|2.0|->
         // |   1.1   |
         // |0.2| |2.2|
         // V
-        private GameBallObject[,] gameField = new GameBallObject[3, 3];
+        private GameBallObject[,] ballsInsideCollector = new GameBallObject[3, 3];
+        private bool[,] ballRemoveMask = new bool[3, 3];
 
-        public ReactiveProperty<bool> GameStuck { get; private set; } = new ReactiveProperty<bool>();
-        public ReactiveProperty<GameBallObject> BallArrival { get; private set; } = new ReactiveProperty<GameBallObject>();
-
-        public string top;
-        public string mid;
-        public string bot;
-
-        private void Awake()
+        private void FieldCheck()
         {
-            leftTrigger.GameBallEntered.Subscribe(b =>
-            {
-                BallArrival.SetValueAndForceNotify(b);
-                AddBall(b, 0);
-                FieldCheckTween();
+            var gameField = CalculateBallsInsideCollector(ballsInsideCollector);
+            var removeMask = Clear(ballRemoveMask);
+            CalculateRemoveMask(gameField, removeMask);
+            AnimateBallRemovalAndCheckFull(gameField, removeMask, out var isFull, out var somethingRemoved);
 
-            }).AddTo(gameObject);
+            if (isFull)
+                GameStuck.Value = isFull;
 
-            middleTrigger.GameBallEntered.Subscribe(b =>
-            {
-                BallArrival.SetValueAndForceNotify(b);
-                AddBall(b, 1);
-                FieldCheckTween();
-
-            }).AddTo(gameObject);
-
-
-            rightTrigger.GameBallEntered.Subscribe(b =>
-            {
-                BallArrival.SetValueAndForceNotify(b);
-                AddBall(b, 2);
-                FieldCheckTween();
-
-            }).AddTo(gameObject);
+            if (somethingRemoved)
+                ScheduleFieldCheck();
         }
 
-        private void DebugShowBalls()
+        private bool[,] Clear(bool[,] arr)
         {
-            var strings = new string[3] { "", "", "" };
-            for(var y = 0; y < gameField.GetLength(1); y++)
+            var width = arr.GetLength(0);
+            var height = arr.GetLength(1);
+            for (var i = 0; i < width; i++)
             {
-                for (var x = 0; x < gameField.GetLength(0); x++)
+                for (var j = 0; j < height; j++)
                 {
-                    if (gameField[x, y] == null)
-                    {
-                        strings[y] += "[NULL]";
-                        continue;
-                    }
-
-                    strings[y] += $"{gameField[x, y].Color}";
+                    arr[i, j] = false;
                 }
             }
-            top = strings[0];
-            mid = strings[1];
-            bot = strings[2];
+            return arr;
         }
 
-        private void AddBall(GameBallObject ball, int rowX)
+        private GameBallObject[,] CalculateBallsInsideCollector(GameBallObject[,] ballsInsideCollector)
+        {
+            FillGameBallColumn(ballsInsideCollector, 0, leftTrigger.GetBallPlacements2());
+            FillGameBallColumn(ballsInsideCollector, 1, middleTrigger.GetBallPlacements2());
+            FillGameBallColumn(ballsInsideCollector, 2, rightTrigger.GetBallPlacements2());
+            return ballsInsideCollector;
+        }
+
+        private void FillGameBallColumn(GameBallObject[,] field, int x, List<GameBallObject> ballsInsideTrigger)
+        {
+            var i2 = ballsInsideTrigger.Count - 1;
+            for (var i = field.GetLength(1) - 1; i >= 0; i--)
+            {
+                if (i2 < 0)
+                    field[x, i] = null;
+
+                while (i2 >= 0 && !ballsInsideTrigger[i2])
+                    i2--;
+
+                if (i2 < 0)
+                    field[x, i] = null;
+                else
+                {
+                    field[x, i] = ballsInsideTrigger[i2];
+                    i2--;
+                }
+            }
+        }
+
+        private void CalculateRemoveMask(GameBallObject[,] ballsField, bool[,] ballRemoveMask)
+        {
+            var width = ballsField.GetLength(0);
+            var height = ballsField.GetLength(1);
+
+            // Column check
+            for (var x = 0; x < width; x++)
+            {
+                if (!ballsField[x, 0])
+                    continue;
+
+                var col = ballsField[x, 0].Color;
+                var allSameColor = true;
+                for (var y = 1; y < height; y++)
+                {
+                    if (!ballsField[x, y] || ballsField[x, y].Color != col)
+                        allSameColor = false;
+                }
+
+                if (!allSameColor)
+                    continue;
+
+                for (var y = 0; y < height; y++)
+                    ballRemoveMask[x, y] = true;
+            }
+
+            // Rows check
+            for (var y = 0; y < height; y++)
+            {
+                if (!ballsField[0, y])
+                    continue;
+
+                var col = ballsField[0, y].Color;
+                var allSameColor = true;
+                for (var x = 1; x < width; x++)
+                {
+                    if (!ballsField[x, y] || ballsField[x, y].Color != col)
+                        allSameColor = false;
+                }
+
+                if (!allSameColor)
+                    continue;
+
+                for (var x = 0; x < width; x++)
+                    ballRemoveMask[x, y] = true;
+            }
+
+            if (ballsField[0, 0] && ballsField[1, 1] && ballsField[2, 2]
+                && ballsField[0, 0].Color == ballsField[1, 1].Color && ballsField[1, 1].Color == ballsField[2, 2].Color)
+            {
+                var col = ballsField[1, 1].Color;
+                ballRemoveMask[0, 0] = true;
+                ballRemoveMask[1, 1] = true;
+                ballRemoveMask[2, 2] = true;
+            }
+
+            if (ballsField[0, 2] && ballsField[1, 1] && ballsField[2, 0]
+                && ballsField[0, 2].Color == ballsField[1, 1].Color && ballsField[1, 1].Color == ballsField[2, 0].Color)
+            {
+                var col = ballsField[1, 1].Color;
+                ballRemoveMask[0, 2] = true;
+                ballRemoveMask[1, 1] = true;
+                ballRemoveMask[2, 0] = true;
+            }
+        }
+
+        private void AnimateBallRemoval(GameBallObject ball)
         {
             if (!ball)
                 return;
 
-            for (var y = gameField.GetLength(1) - 1; y >= 0; y--)
-            {
-                if (gameField[rowX, y])
-                    continue;
+            GameManager.Instance.LauchGameBallAnimation(ball);
+            Destroy(ball.gameObject);
 
-                gameField[rowX, y] = ball;
-                return;
+            var emitParams = new EmitParams();
+            emitParams.position = ball.transform.position;
+
+            ParticleSystem clone = null;
+            switch (ball.Color)
+            {
+                case BallColor.Blue:
+                    clone = Instantiate(blueParticles, redParticles.transform.parent);
+                    break;
+                case BallColor.Red:
+                    clone = Instantiate(redParticles, redParticles.transform.parent);
+                    break;
+                case BallColor.Green:
+                    clone = Instantiate(greenParticles, redParticles.transform.parent);
+                    break;
+                case BallColor.None:
+                    throw new InvalidEnumArgumentException();
             }
 
-
-            DebugShowBalls();
-            // DESTROY BALL
+            clone.transform.position = ball.transform.position;
+            clone.Play();
         }
 
-        private void FieldCheck()
+        private void AnimateBallRemovalAndCheckFull(GameBallObject[,]  gameField, bool[,] removeMask, out bool isFull, out bool somethingRemoved)
         {
-            while (CollectAndRemoveBalls())
-            {
-                FallDown();
-            }
-            DebugShowBalls();
+            var width = gameField.GetLength(0);
+            var height = gameField.GetLength(1);
+            isFull = true;
+            somethingRemoved = false;
 
-            if (IsFull())
-                GameStuck.SetValueAndForceNotify(true);
-        }
-
-        Tween fieldCheckTween;
-        private void FieldCheckTween()
-        {
-            fieldCheckTween?.Kill();
-            fieldCheckTween = DOVirtual.DelayedCall(.5f, () =>
+            for (var x = 0; x < width; x++)
             {
-                FieldCheck();
-            }).SetLink(gameObject);
-        }
-
-        public bool IsFull()
-        {
-            for (var x = 0; x < gameField.GetLength(0); x++)
-            {
-                for (var y = 0; y < gameField.GetLength(1); y++)
+                for (var y = 0; y < height; y++)
                 {
-                    if (gameField[x, y] == null)
-                        return false;
-                }
-            }
-            return true;
-        }
+                    if (!gameField[x, y])
+                    {
+                        isFull = false;
+                        continue;
+                    }
 
-        private void FallDown()
-        {
-            for (var x = 0; x < gameField.GetLength(0); x++)
-            {
-                for (var y = gameField.GetLength(1) - 1; y > 0; y--)
-                {
-                    if (gameField[x, y] != null)
+                    if (!removeMask[x, y])
                         continue;
 
-                    if (gameField[x, y - 1] == null)
-                        continue;
-
-                    gameField[x, y] = gameField[x, y - 1];
+                    isFull = false;
+                    somethingRemoved = true;
+                    AnimateBallRemoval(gameField[x, y]);
                 }
             }
         }
 
-        private void AnimateBallRemoval(GameBallObject[] balls)
+        const float FIELD_CHECK_DELAY = .25f;
+        private void ScheduleFieldCheck()
         {
-            if (balls == null)
-                return;
-
-            foreach (var b in balls)
-            {
-                GameManager.Instance.LauchGameBallAnimation(b);
-                Destroy(b.gameObject);
-
-                var emitParams = new EmitParams();
-                emitParams.position = b.transform.position;
-
-                ParticleSystem clone = null;
-                switch (b.Color)
-                {
-                    case BallColor.Blue:
-                        clone = Instantiate(blueParticles, redParticles.transform.parent);
-                        break;
-                    case BallColor.Red:
-                        clone = Instantiate(redParticles, redParticles.transform.parent);
-                        break;
-                    case BallColor.Green:
-                        clone = Instantiate(greenParticles, redParticles.transform.parent);
-                        break;
-                }
-
-                clone.transform.position = b.transform.position;
-                clone.Play();
-            }
+            nextFieldCheck = Time.time + FIELD_CHECK_DELAY;
         }
 
-        float nextTime;
+        float nextFieldCheck = -1;
         private void Update()
         {
-            
-        }
-
-        private bool CollectAndRemoveBalls()
-        {
-            var removedSomething = false;
-            for (var x = 0; x < gameField.GetLength(0); x++)
+            if (nextFieldCheck > 0 && Time.time > nextFieldCheck)
             {
-                var removed = CheckAndRemove(x, 0, 3, (x1, y1) => (x1, y1 + 1));
-                if (removed != null) removedSomething = true;
-                AnimateBallRemoval(removed);
-            }
-
-            for (var y = 0; y < gameField.GetLength(1); y++)
-            {
-                var removed = CheckAndRemove(0, y, 3, (x1, y1) => (x1 + 1, y1));
-                if (removed != null) removedSomething = true;
-                AnimateBallRemoval(removed);
-            }
-
-            var diagonal1 = CheckAndRemove(0, 0, 3, (x1, y1) => (x1 + 1, y1 + 1));
-            if (diagonal1 != null) removedSomething = true;
-            AnimateBallRemoval(diagonal1);
-
-            var diagonal2 = CheckAndRemove(2, 0, 3, (x1, y1) => (x1 - 1, y1 + 1));
-            if (diagonal2 != null) removedSomething = true;
-            AnimateBallRemoval(diagonal2);
-
-            return removedSomething;
-
-            GameBallObject[] CheckAndRemove(int x, int y, int steps, Func<int, int, (int, int)> func)
-            {
-                if (!CheckSameColor(x, y, steps, func))
-                    return null;
-
-                return RemoveFromField(x, y, steps, func);
-            }
-
-            GameBallObject[] RemoveFromField(int x, int y, int steps, Func<int, int, (int, int)> func)
-            {
-                var arr = new GameBallObject[steps];
-                for (var i = 0; i < steps; i++)
-                {
-                    arr[i] = gameField[x, y];
-                    gameField[x, y] = null;
-
-                    (x, y) = func(x, y);
-                }
-                return arr;
-            }
-
-            bool CheckSameColor(int x, int y, int steps, Func<int, int, (int, int)> func)
-            {
-                if (!gameField[x, y])
-                    return false;
-
-                var color = gameField[x, y].Color;
-                steps--;
-               
-                while (steps > 0)
-                {
-                    (x, y) = func(x, y);
-
-                    if (!gameField[x, y] || gameField[x, y].Color != color)
-                        return false;
-
-                    steps--;
-                }
-
-                return true;
+                nextFieldCheck = -1;
+                FieldCheck();
             }
         }
     }
