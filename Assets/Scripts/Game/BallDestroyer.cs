@@ -22,7 +22,7 @@ namespace Assets.Scripts.Game
         public void RemoveScore(GameBallObject o)
         {
             var score = GameManager.Instance.scoreDictionary[o.Color];
-            GameManager.Instance.PlayerScore.Value -= score;
+            GameManager.Instance.PlayerScore.Value -= (int)(score * 1.5f);
         }
     }
 }
